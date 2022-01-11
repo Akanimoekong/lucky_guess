@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,13 +10,14 @@ class GuessPage extends StatefulWidget {
   _GuessPageState createState() => _GuessPageState();
 }
 
-class _GuessPageState extends State {
+class _GuessPageState extends State<GuessPage> {
   int leftDice = 1;
   int rightDice = 1;
-  late String result = " ";
+  late String result = "2";
   late int outCome;
   String prediction = '12';
-  late int buttonNumber = 2;
+  // late int myBut;
+
 
   final ButtonStyle style = ElevatedButton.styleFrom(
     primary: Colors.red,
@@ -28,64 +28,66 @@ class _GuessPageState extends State {
   );
 
   void changeDice() {
-    int myBut = buttonNumber;
+    // int newbut = buttonNumber;
     setState(() {
-// or as a local variable
+      // or as a local variable
       final player = AudioCache();
-// call this method when desired
+      // call this method when desired
       player.play('shakedice.wav');
+      // buttonNumber = myBut;
 
       leftDice = Random().nextInt(6) + 1;
       rightDice = Random().nextInt(6) + 1;
 
       outCome = leftDice + rightDice;
       result = outCome.toString();
-      // int result = leftDice + rightDice;
-      // outCome = result.toString();
 
+      var myBut;
       if (outCome == myBut) {
         print('Correct');
-        // AudioCache()..play('congratulations.mp3');
+        AudioCache()..play('congratulations.mp3');
         print('this is $outCome');
+        print('that $myBut');
       } else {
         print('Wrong');
         print('this is $outCome');
+        print('that $myBut');
       }
     });
   }
 
-// Right dice building
+  // Right dice building
   Expanded buildDiceRight() {
     return Expanded(
       child: FlatButton(
         onPressed: () {
           setState(() {
             changeDice();
-// totalOutCome();
+            // totalOutCome();
           });
         },
         child: Image.asset('images/dice$rightDice.png'),
       ),
     );
   }
-
-// Left dice building
+  // Left dice building
   Expanded buildDiceLeft() {
     return Expanded(
       child: FlatButton(
         onPressed: () {
           setState(() {
             changeDice();
-// totalOutCome();
-          });
+            // totalOutCome();
+          }
+          );
         },
         child: Image.asset('images/dice$leftDice.png'),
       ),
     );
   }
 
-  Padding predictButton(int buttonNumber) {
-// int myBut = buttonNumber;
+  Padding predictButton( int buttonNumber) {
+    int myBut = buttonNumber;
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(
@@ -94,12 +96,12 @@ class _GuessPageState extends State {
             setState(() {
               int predict = buttonNumber;
               prediction = predict.toString();
-              print('$buttonNumber');
+              print('Shout out $buttonNumber');
             });
           },
           child: Text(buttonNumber.toString())
-// child: Text(myBut.toString()),
-          ),
+        // child: Text(myBut.toString()),
+      ),
     );
   }
 
@@ -108,6 +110,7 @@ class _GuessPageState extends State {
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Card(
             borderOnForeground: true,
@@ -154,7 +157,7 @@ class _GuessPageState extends State {
           const SizedBox(height: 30),
           Center(
             child: Container(
-// margin: const EdgeInsets.all(20),
+              // margin: const EdgeInsets.all(20),
               height: 50.0,
               width: 50.0,
               decoration: BoxDecoration(
@@ -207,8 +210,8 @@ class _GuessPageState extends State {
                     onPressed: () {
                       setState(() {
                         changeDice();
-// totalOutCome();
-// diceSound();
+                        // totalOutCome();
+                        // diceSound();
                       });
                     },
                     child: const Text('R'),
@@ -222,3 +225,4 @@ class _GuessPageState extends State {
     );
   }
 }
+// End of Project
