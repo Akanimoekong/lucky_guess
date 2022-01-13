@@ -1,8 +1,8 @@
 import 'dart:math';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 
 class GuessPage extends StatefulWidget {
   const GuessPage({Key? key}) : super(key: key);
@@ -18,7 +18,6 @@ class _GuessPageState extends State<GuessPage> {
   late int outCome;
   String prediction = '12';
   int buttonNumber = 2;
-
 
   final ButtonStyle style = ElevatedButton.styleFrom(
     primary: Colors.red,
@@ -44,6 +43,11 @@ class _GuessPageState extends State<GuessPage> {
       result = outCome.toString();
 
       if (outCome == buttonNumber) {
+        if (outCome == 12) {
+          AudioCache()..play('congratulations.mp3');
+        } else {
+          AudioCache()..play('congratulations.mp3');
+        }
         print('Correct');
         AudioCache()..play('congratulations.mp3');
         print('this is $outCome');
@@ -70,6 +74,7 @@ class _GuessPageState extends State<GuessPage> {
       ),
     );
   }
+
   // Left dice building
   Expanded buildDiceLeft() {
     return Expanded(
@@ -77,17 +82,17 @@ class _GuessPageState extends State<GuessPage> {
         onPressed: () {
           setState(() {
             changeDice();
-          }
-          );
+          });
         },
         child: Image.asset('images/dice$leftDice.png'),
       ),
     );
   }
 
-  Padding predictButton( int buttonNumber,
-      // Function(int number) onClick
-      ) {
+  Padding predictButton(
+    int buttonNumber,
+    // Function(int number) onClick
+  ) {
     // int myBut = buttonNumber;
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -102,8 +107,7 @@ class _GuessPageState extends State<GuessPage> {
               print('Shout out $buttonNumber');
             });
           },
-          child: Text(buttonNumber.toString())
-      ),
+          child: Text(buttonNumber.toString())),
     );
   }
 
@@ -187,7 +191,8 @@ class _GuessPageState extends State<GuessPage> {
           Center(
             child: Wrap(
               children: [
-                predictButton(2,
+                predictButton(
+                  2,
                   //       (number){
                   // buttonNumber = number;}
                 ),
