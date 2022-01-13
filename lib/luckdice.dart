@@ -3,6 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+
 class GuessPage extends StatefulWidget {
   const GuessPage({Key? key}) : super(key: key);
 
@@ -16,7 +17,7 @@ class _GuessPageState extends State<GuessPage> {
   late String result = "2";
   late int outCome;
   String prediction = '12';
-  // late int myBut;
+  int buttonNumber = 2;
 
 
   final ButtonStyle style = ElevatedButton.styleFrom(
@@ -28,13 +29,13 @@ class _GuessPageState extends State<GuessPage> {
   );
 
   void changeDice() {
-    // int newbut = buttonNumber;
+    print('It is working');
+
     setState(() {
       // or as a local variable
       final player = AudioCache();
       // call this method when desired
       player.play('shakedice.wav');
-      // buttonNumber = myBut;
 
       leftDice = Random().nextInt(6) + 1;
       rightDice = Random().nextInt(6) + 1;
@@ -42,16 +43,15 @@ class _GuessPageState extends State<GuessPage> {
       outCome = leftDice + rightDice;
       result = outCome.toString();
 
-      var myBut;
-      if (outCome == myBut) {
+      if (outCome == buttonNumber) {
         print('Correct');
         AudioCache()..play('congratulations.mp3');
         print('this is $outCome');
-        print('that $myBut');
+        print('that $buttonNumber');
       } else {
         print('Wrong');
         print('this is $outCome');
-        print('that $myBut');
+        print('that $buttonNumber');
       }
     });
   }
@@ -77,7 +77,6 @@ class _GuessPageState extends State<GuessPage> {
         onPressed: () {
           setState(() {
             changeDice();
-            // totalOutCome();
           }
           );
         },
@@ -86,21 +85,24 @@ class _GuessPageState extends State<GuessPage> {
     );
   }
 
-  Padding predictButton( int buttonNumber) {
-    int myBut = buttonNumber;
+  Padding predictButton( int buttonNumber,
+      // Function(int number) onClick
+      ) {
+    // int myBut = buttonNumber;
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(
           style: style,
           onPressed: () {
             setState(() {
+              this.buttonNumber = buttonNumber;
+              // onClick(buttonNumber);
               int predict = buttonNumber;
               prediction = predict.toString();
               print('Shout out $buttonNumber');
             });
           },
           child: Text(buttonNumber.toString())
-        // child: Text(myBut.toString()),
       ),
     );
   }
@@ -110,7 +112,6 @@ class _GuessPageState extends State<GuessPage> {
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Card(
             borderOnForeground: true,
@@ -186,7 +187,10 @@ class _GuessPageState extends State<GuessPage> {
           Center(
             child: Wrap(
               children: [
-                predictButton(2),
+                predictButton(2,
+                  //       (number){
+                  // buttonNumber = number;}
+                ),
                 predictButton(3),
                 predictButton(4),
                 predictButton(5),
