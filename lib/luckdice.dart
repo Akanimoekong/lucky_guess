@@ -16,7 +16,7 @@ class _GuessPageState extends State<GuessPage> {
   int rightDice = 1;
   late String result = "2";
   late int outCome;
-  String prediction = '12';
+  late String prediction = " ";
   int buttonNumber = 2;
 
 
@@ -46,12 +46,8 @@ class _GuessPageState extends State<GuessPage> {
       if (outCome == buttonNumber) {
         print('Correct');
         AudioCache()..play('congratulations.mp3');
-        print('this is $outCome');
-        print('that $buttonNumber');
       } else {
         print('Wrong');
-        print('this is $outCome');
-        print('that $buttonNumber');
       }
     });
   }
@@ -85,7 +81,7 @@ class _GuessPageState extends State<GuessPage> {
     );
   }
 
-  Padding predictButton( int buttonNumber,
+  Padding predictButton(buttonNumber,
       // Function(int number) onClick
       ) {
     // int myBut = buttonNumber;
@@ -112,6 +108,7 @@ class _GuessPageState extends State<GuessPage> {
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Card(
             borderOnForeground: true,
