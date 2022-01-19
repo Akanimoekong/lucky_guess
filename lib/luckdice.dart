@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 
 class GuessPage extends StatefulWidget {
   const GuessPage({Key? key}) : super(key: key);
@@ -14,9 +15,9 @@ class GuessPage extends StatefulWidget {
 class _GuessPageState extends State<GuessPage> {
   int leftDice = 1;
   int rightDice = 1;
-  late String result = "2";
+  String result = "2";
   late int outCome;
-  String prediction = '12';
+  String prediction = ' ';
   int buttonNumber = 2;
 
   final ButtonStyle style = ElevatedButton.styleFrom(
@@ -26,15 +27,23 @@ class _GuessPageState extends State<GuessPage> {
       fontSize: 20,
     ),
   );
+  // void toast() {
+  //   Fluttertoast.showToast(
+  //       msg: "JackPot",
+  //       toastLength: Toast.LENGTH_LONG,
+  //       gravity: ToastGravity.CENTER,
+  //       timeInSecForIosWeb: 1,
+  //       textColor: Colors.white,
+  //       fontSize: 30.0);
+  // }
 
   void changeDice() {
-    print('It is working');
-
+    // toast();
     setState(() {
       // or as a local variable
-      final player = AudioCache();
+      AudioCache()..play('shakedice.wav');
+
       // call this method when desired
-      player.play('shakedice.wav');
 
       leftDice = Random().nextInt(6) + 1;
       rightDice = Random().nextInt(6) + 1;
@@ -50,12 +59,8 @@ class _GuessPageState extends State<GuessPage> {
         }
         print('Correct');
         AudioCache()..play('congratulations.mp3');
-        print('this is $outCome');
-        print('that $buttonNumber');
       } else {
         print('Wrong');
-        print('this is $outCome');
-        print('that $buttonNumber');
       }
     });
   }
@@ -89,10 +94,7 @@ class _GuessPageState extends State<GuessPage> {
     );
   }
 
-  Padding predictButton(
-    int buttonNumber,
-    // Function(int number) onClick
-  ) {
+  Padding predictButton(buttonNumber) {
     // int myBut = buttonNumber;
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -113,123 +115,131 @@ class _GuessPageState extends State<GuessPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            borderOnForeground: true,
-            margin: const EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 100.0,
-            ),
-            child: ListTile(
-              title: Center(
-                child: Text(
-                  result,
-                  style: const TextStyle(
-                      color: Colors.blue,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
-          const Center(
-            child: Text(
-              'TOTAL OUTCOME',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 50.0,
-            width: 150.0,
-          ),
-          Center(
-            child: Container(
-              width: 250.0,
-              child: Row(
-                children: [
-                  buildDiceLeft(),
-                  buildDiceRight(),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          Center(
-            child: Container(
-              // margin: const EdgeInsets.all(20),
-              height: 50.0,
-              width: 50.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1.0,
-                  style: BorderStyle.solid,
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  prediction,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          Center(
-            child: Wrap(
+    return MaterialApp(
+      home: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.blue,
+          body: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                predictButton(
-                  2,
-                  //       (number){
-                  // buttonNumber = number;}
-                ),
-                predictButton(3),
-                predictButton(4),
-                predictButton(5),
-                predictButton(6),
-                predictButton(7),
-                predictButton(8),
-                predictButton(9),
-                predictButton(10),
-                predictButton(11),
-                predictButton(12),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      padding: const EdgeInsets.all(10),
-                      textStyle: const TextStyle(
-                        fontSize: 20,
+                Card(
+                  borderOnForeground: true,
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 100.0,
+                  ),
+                  child: ListTile(
+                    title: Center(
+                      child: Text(
+                        result,
+                        style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        changeDice();
-                        // totalOutCome();
-                        // diceSound();
-                      });
-                    },
-                    child: const Text('R'),
+                  ),
+                ),
+                const Center(
+                  child: Text(
+                    'TOTAL OUTCOME',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 50.0,
+                  width: 150.0,
+                ),
+                Center(
+                  child: Container(
+                    width: 250.0,
+                    child: Row(
+                      children: [
+                        buildDiceLeft(),
+                        buildDiceRight(),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Center(
+                  child: Container(
+                    // margin: const EdgeInsets.all(20),
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        prediction,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Wrap(
+                    children: [
+                      predictButton(
+                        2,
+                        //       (number){
+                        // buttonNumber = number;}
+                      ),
+                      predictButton(3),
+                      predictButton(4),
+                      predictButton(5),
+                      predictButton(6),
+                      predictButton(7),
+                      predictButton(8),
+                      predictButton(9),
+                      predictButton(10),
+                      predictButton(11),
+                      predictButton(12),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            padding: const EdgeInsets.all(10),
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              changeDice();
+                              // totalOutCome();
+                              // diceSound();
+                            });
+                          },
+                          child: const Text('R'),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
