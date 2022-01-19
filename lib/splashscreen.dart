@@ -12,7 +12,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 5), () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GuessPage()));
     });
@@ -32,6 +32,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
               Image.asset('images/diceapp.gif',
                 height: 150,
               ),
+              SizedBox(height: 100,),
               CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation(Colors.white),
               )
