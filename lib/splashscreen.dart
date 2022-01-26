@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lucky_guess/luckdice.dart';
 
@@ -12,7 +13,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 4), () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GuessPage()));
     });
@@ -29,10 +30,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // AssetImage(assetName)
-              Image.asset('images/diceapp.gif',
+              Image.asset(
+                'images/diceapp.gif',
                 height: 150,
               ),
-              SizedBox(height: 100,),
+              SizedBox(
+                height: 100,
+              ),
               CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation(Colors.white),
               )
