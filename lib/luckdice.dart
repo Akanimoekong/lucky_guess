@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class GuessPage extends StatefulWidget {
   const GuessPage({Key? key}) : super(key: key);
@@ -27,15 +27,18 @@ class _GuessPageState extends State<GuessPage> {
       fontSize: 20,
     ),
   );
-  // void toast() {
-  //   Fluttertoast.showToast(
-  //       msg: "JackPot",
-  //       toastLength: Toast.LENGTH_LONG,
-  //       gravity: ToastGravity.CENTER,
-  //       timeInSecForIosWeb: 1,
-  //       textColor: Colors.white,
-  //       fontSize: 30.0);
-  // }
+
+// Toaster to display info
+  toast(String myinfo, Color color) {
+    return Fluttertoast.showToast(
+        msg: myinfo,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        backgroundColor: color,
+        fontSize: 8.0);
+  }
 
   void changeDice() {
     // toast();
@@ -54,13 +57,12 @@ class _GuessPageState extends State<GuessPage> {
       if (outCome == buttonNumber) {
         if (outCome == 12) {
           AudioCache()..play('congratulations.mp3');
+          toast('JackPot', Colors.green);
         } else {
-          AudioCache()..play('congratulations.mp3');
+          toast('Correct', Colors.green);
         }
-        print('Correct');
-        AudioCache()..play('congratulations.mp3');
       } else {
-        print('Wrong');
+        toast('Wrong', Colors.red);
       }
     });
   }
@@ -97,20 +99,18 @@ class _GuessPageState extends State<GuessPage> {
   Padding predictButton(buttonNumber) {
     // int myBut = buttonNumber;
     return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: ElevatedButton(
-          style: style,
-          onPressed: () {
-            setState(() {
-              this.buttonNumber = buttonNumber;
-              // onClick(buttonNumber);
-              int predict = buttonNumber;
-              prediction = predict.toString();
-              print('Shout out $buttonNumber');
-            });
-          },
-          child: Text(buttonNumber.toString())),
-    );
+        padding: const EdgeInsets.all(4.0),
+        child: ElevatedButton(
+            style: style,
+            onPressed: () {
+              setState(() {
+                this.buttonNumber = buttonNumber;
+                // onClick(buttonNumber);
+                int predict = buttonNumber;
+                prediction = predict.toString();
+              });
+            },
+            child: Text(buttonNumber.toString())));
   }
 
   @override
