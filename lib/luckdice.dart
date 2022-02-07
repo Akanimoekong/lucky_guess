@@ -41,7 +41,7 @@ class _GuessPageState extends State<GuessPage> {
     // toast();
     setState(() {
       // or as a local variable
-      AudioCache()..play('shakedice.wav');
+      AudioCache().play('shakedice.wav');
 
       // call this method when desired
 

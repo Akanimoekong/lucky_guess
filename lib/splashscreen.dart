@@ -32,8 +32,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
               Image.asset('images/diceapp.gif',
                 height: 150,
               ),
-              SizedBox(height: 100,),
-              CircularProgressIndicator(
+              const SizedBox(height: 100,),
+              const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation(Colors.white),
               )
             ],
