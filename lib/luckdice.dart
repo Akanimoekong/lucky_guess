@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import 'data/add_helper.dart';
 
 class GuessPage extends StatefulWidget {
   const GuessPage({Key? key}) : super(key: key);
@@ -13,6 +16,11 @@ class GuessPage extends StatefulWidget {
 }
 
 class _GuessPageState extends State<GuessPage> {
+  // Admob variables
+  late BannerAd _bottomBannerAd;
+  bool _isBottomBannerAdLoaded = false;
+
+  // Game variables
   int leftDice = 1;
   int rightDice = 1;
   String result = "2";
@@ -20,6 +28,39 @@ class _GuessPageState extends State<GuessPage> {
   String prediction = ' ';
   int buttonNumber = 2;
 
+  //Load admob
+  void _createBottomBannerAd() {
+    _bottomBannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBottomBannerAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    _bottomBannerAd.load();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _createBottomBannerAd();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bottomBannerAd.dispose();
+  }
+
+  // ElevatedButton
   final ButtonStyle style = ElevatedButton.styleFrom(
     primary: Colors.red,
     padding: const EdgeInsets.all(10),
@@ -27,15 +68,18 @@ class _GuessPageState extends State<GuessPage> {
       fontSize: 20,
     ),
   );
-  // void toast() {
-  //   Fluttertoast.showToast(
-  //       msg: "JackPot",
-  //       toastLength: Toast.LENGTH_LONG,
-  //       gravity: ToastGravity.CENTER,
-  //       timeInSecForIosWeb: 1,
-  //       textColor: Colors.white,
-  //       fontSize: 30.0);
-  // }
+
+// Toaster to display info
+  toast(String myinfo, Color color) {
+    return Fluttertoast.showToast(
+        msg: myinfo,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        backgroundColor: color,
+        fontSize: 8.0);
+  }
 
   void changeDice() {
     // toast();
@@ -54,13 +98,12 @@ class _GuessPageState extends State<GuessPage> {
       if (outCome == buttonNumber) {
         if (outCome == 12) {
           AudioCache()..play('congratulations.mp3');
+          toast('JackPot', Colors.green);
         } else {
-          AudioCache()..play('congratulations.mp3');
+          toast('Correct', Colors.green);
         }
-        print('Correct');
-        AudioCache()..play('congratulations.mp3');
       } else {
-        print('Wrong');
+        toast('Wrong', Colors.red);
       }
     });
   }
@@ -97,20 +140,18 @@ class _GuessPageState extends State<GuessPage> {
   Padding predictButton(buttonNumber) {
     // int myBut = buttonNumber;
     return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: ElevatedButton(
-          style: style,
-          onPressed: () {
-            setState(() {
-              this.buttonNumber = buttonNumber;
-              // onClick(buttonNumber);
-              int predict = buttonNumber;
-              prediction = predict.toString();
-              print('Shout out $buttonNumber');
-            });
-          },
-          child: Text(buttonNumber.toString())),
-    );
+        padding: const EdgeInsets.all(4.0),
+        child: ElevatedButton(
+            style: style,
+            onPressed: () {
+              setState(() {
+                this.buttonNumber = buttonNumber;
+                // onClick(buttonNumber);
+                int predict = buttonNumber;
+                prediction = predict.toString();
+              });
+            },
+            child: Text(buttonNumber.toString())));
   }
 
   @override
@@ -118,6 +159,15 @@ class _GuessPageState extends State<GuessPage> {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
+          // Display our bottom banner
+          bottomNavigationBar: _isBottomBannerAdLoaded
+              ? Container(
+                  height: _bottomBannerAd.size.height.toDouble(),
+                  width: _bottomBannerAd.size.width.toDouble(),
+                  child: AdWidget(ad: _bottomBannerAd),
+                )
+              : null,
+
           backgroundColor: Colors.blue,
           body: Center(
             child: Column(

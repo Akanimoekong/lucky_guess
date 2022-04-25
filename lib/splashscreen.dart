@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lucky_guess/luckdice.dart';
 
@@ -29,10 +30,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // AssetImage(assetName)
-              Image.asset('images/diceapp.gif',
+              Image.asset(
+                'images/diceapp.gif',
                 height: 150,
               ),
-              const SizedBox(height: 100,),
+
+              const SizedBox(
+                height: 100,
+              ),
               const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation(Colors.white),
               )
