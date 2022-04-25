@@ -2,15 +2,15 @@
 
 A simple guessing game
 
-## Getting Started
+## About Lucky Guess Game
+Lucky guess game is a predictive game where you guess the total possible outcome of a dice roll, you can use your own algorithm to possibly guess the random generation of the possible outcome of the dice row. Have fun and challenge your brain in this Lucky Guess Game – See how good you are with numbers, predict now.
 
-This project is a starting point for a Flutter application.
+How to play
+1. Predict the possible outcome by pressing any of the number button.
+2. Tap on the “R” button or the dice to roll the dice.
+3. See outcome and status if correct.
 
-A few resources to get you started if this is your first Flutter project:
+The game is developed using flutter
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Link for download https://play.google.com/store/apps/details?id=app.web.jackieriel.lucky_guess
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
