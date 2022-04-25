@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import 'data/add_helper.dart';
+// Admob const
+const int maxFailedLoadAttempts = 3;
 
 class GuessPage extends StatefulWidget {
   const GuessPage({Key? key}) : super(key: key);
@@ -17,8 +18,12 @@ class GuessPage extends StatefulWidget {
 
 class _GuessPageState extends State<GuessPage> {
   // Admob variables
-  late BannerAd _bottomBannerAd;
-  bool _isBottomBannerAdLoaded = false;
+  // late BannerAd _bottomBannerAd;
+  // bool _isBottomBannerAdLoaded = false;
+
+  // interstitialLoadAttempts variable
+  // int _interstitialLoadAttempts = 0;
+  // InterstitialAd? _interstitialAd;
 
   // Game variables
   int leftDice = 1;
@@ -29,36 +34,24 @@ class _GuessPageState extends State<GuessPage> {
   int buttonNumber = 2;
 
   //Load admob
-  void _createBottomBannerAd() {
-    _bottomBannerAd = BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBottomBannerAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
-    _bottomBannerAd.load();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _createBottomBannerAd();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bottomBannerAd.dispose();
-  }
+  // void _createBottomBannerAd() {
+  //   _bottomBannerAd = BannerAd(
+  //     adUnitId: AdHelper.bannerAdUnitId,
+  //     size: AdSize.banner,
+  //     request: AdRequest(),
+  //     listener: BannerAdListener(
+  //       onAdLoaded: (_) {
+  //         setState(() {
+  //           _isBottomBannerAdLoaded = true;
+  //         });
+  //       },
+  //       onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       },
+  //     ),
+  //   );
+  //   _bottomBannerAd.load();
+  // }
 
   // ElevatedButton
   final ButtonStyle style = ElevatedButton.styleFrom(
@@ -160,13 +153,13 @@ class _GuessPageState extends State<GuessPage> {
       home: SafeArea(
         child: Scaffold(
           // Display our bottom banner
-          bottomNavigationBar: _isBottomBannerAdLoaded
-              ? Container(
-                  height: _bottomBannerAd.size.height.toDouble(),
-                  width: _bottomBannerAd.size.width.toDouble(),
-                  child: AdWidget(ad: _bottomBannerAd),
-                )
-              : null,
+          // bottomNavigationBar: _isBottomBannerAdLoaded
+          //     ? Container(
+          //         height: _bottomBannerAd.size.height.toDouble(),
+          //         width: _bottomBannerAd.size.width.toDouble(),
+          //         child: AdWidget(ad: _bottomBannerAd),
+          //       )
+          //     : null,
 
           backgroundColor: Colors.blue,
           body: Center(
@@ -245,44 +238,62 @@ class _GuessPageState extends State<GuessPage> {
                     ),
                   ),
                 ),
-                Center(
-                  child: Wrap(
+                Container(
+                  child: Column(
                     children: [
-                      predictButton(
-                        2,
-                        //       (number){
-                        // buttonNumber = number;}
-                      ),
-                      predictButton(3),
-                      predictButton(4),
-                      predictButton(5),
-                      predictButton(6),
-                      predictButton(7),
-                      predictButton(8),
-                      predictButton(9),
-                      predictButton(10),
-                      predictButton(11),
-                      predictButton(12),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
-                            padding: const EdgeInsets.all(10),
-                            textStyle: const TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              changeDice();
-                              // totalOutCome();
-                              // diceSound();
-                            });
-                          },
-                          child: const Text('R'),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            predictButton(2),
+                            predictButton(3),
+                            predictButton(4),
+                            predictButton(5),
+                          ],
                         ),
                       ),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            predictButton(6),
+                            predictButton(7),
+                            predictButton(8),
+                            predictButton(9),
+                          ],
+                        ),
+                      ),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            predictButton(10),
+                            predictButton(11),
+                            predictButton(12),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.green,
+                                  padding: const EdgeInsets.all(10),
+                                  textStyle: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  // _showInterstitialAd();
+                                  setState(() {
+                                    changeDice();
+                                    // totalOutCome();
+                                    // diceSound();
+                                  });
+                                },
+                                child: const Text('R'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

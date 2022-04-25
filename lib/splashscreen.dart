@@ -1,7 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lucky_guess/luckdice.dart';
+
+import 'data/add_helper.dart';
+
+// Admob const
+const int maxFailedLoadAttempts = 3;
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
@@ -10,50 +16,74 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
+  // interstitialLoadAttempts variable
+  int _interstitialLoadAttempts = 0;
+  InterstitialAd? _interstitialAd;
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    _createInterstitialAd();
+
+    Timer(Duration(seconds: 4), () {
+      _showInterstitialAd();
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => GuessPage()));
     });
   }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _createBottomBannerAd();
+  //   _createInterstitialAd();
+  // }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // _bottomBannerAd.dispose();
+    _interstitialAd?.dispose();
+  }
+
+  // InterstitialAd Function
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          _interstitialAd = ad;
+          _interstitialLoadAttempts = 0;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          _interstitialLoadAttempts += 1;
+          _interstitialAd = null;
+          if (_interstitialLoadAttempts <= maxFailedLoadAttempts) {
+            _createInterstitialAd();
+          }
+        },
+      ),
+    );
+  }
+
+  // showInterstitialAd
+  void _showInterstitialAd() {
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (InterstitialAd ad) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+        onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+      );
+      _interstitialAd!.show();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.black,
-          body: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // AssetImage(assetName)
-              Image.asset(
-                'images/diceapp.gif',
-                height: 150,
-              ),
-              SizedBox(
-                height: 100,
-              ),
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.white),
-              )
-            ],
-          )
-
-              //   SplashScreen(
-              //   seconds: 3,
-              //   navigateAfterSeconds: GuessPage(),
-              //   backgroundColor: Colors.blue.shade900,
-              //   title: Text('Lucky Guess'),
-              //   image: Image.asset('images/diceapp.gif'),
-              //   photoSize: 100.0,
-              // ),
-              ),
-        ),
-      ),
-    );
+    return MaterialApp();
   }
 }

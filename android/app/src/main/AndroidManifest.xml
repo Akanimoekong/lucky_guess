@@ -3,7 +3,7 @@
    <application
         android:label="lucky_guess"
         android:icon="@mipmap/ic_launcher">
-        <activity
+        <activity android:exported="true"
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -42,7 +42,7 @@
        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
        <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"
-           android:value="ca-app-pub-3940256099942544~3347511713"/>
+           android:value="ca-app-pub-9803945050008647~8223871733"/>
 
     </application>
 </manifest>
